@@ -1,9 +1,9 @@
-
+-- Create the alx_book_store database
 CREATE DATABASE IF NOT EXISTS alx_book_store;
 USE alx_book_store;
 
--- Create authors table
-CREATE TABLE IF NOT EXISTS authors (
+-- Create Authors table
+CREATE TABLE IF NOT EXISTS Authors (
     author_id INT PRIMARY KEY AUTO_INCREMENT,
     author_name VARCHAR(215) NOT NULL,
     bio TEXT,
@@ -11,8 +11,8 @@ CREATE TABLE IF NOT EXISTS authors (
     nationality VARCHAR(100)
 );
 
--- Create books table
-CREATE TABLE IF NOT EXISTS books (
+-- Create Books table
+CREATE TABLE IF NOT EXISTS Books (
     book_id INT PRIMARY KEY AUTO_INCREMENT,
     title VARCHAR(130) NOT NULL,
     author_id INT NOT NULL,
@@ -21,11 +21,11 @@ CREATE TABLE IF NOT EXISTS books (
     stock_quantity INT DEFAULT 0,
     publication_date DATE,
     genre VARCHAR(50),
-    FOREIGN KEY (author_id) REFERENCES authors(author_id) ON DELETE CASCADE
+    FOREIGN KEY (author_id) REFERENCES Authors(author_id) ON DELETE CASCADE
 );
 
--- Create customers table
-CREATE TABLE IF NOT EXISTS customers (
+-- Create Customers table
+CREATE TABLE IF NOT EXISTS Customers (
     customer_id INT PRIMARY KEY AUTO_INCREMENT,
     customer_name VARCHAR(215) NOT NULL,
     email VARCHAR(215) UNIQUE NOT NULL,
@@ -34,31 +34,31 @@ CREATE TABLE IF NOT EXISTS customers (
     registration_date DATE DEFAULT (CURRENT_DATE)
 );
 
--- Create orders table
-CREATE TABLE IF NOT EXISTS orders (
+-- Create Orders table
+CREATE TABLE IF NOT EXISTS Orders (
     order_id INT PRIMARY KEY AUTO_INCREMENT,
     customer_id INT NOT NULL,
     order_date DATE DEFAULT (CURRENT_DATE),
     total_amount DECIMAL(10, 2) NOT NULL,
     status VARCHAR(20) DEFAULT 'pending',
-    FOREIGN KEY (customer_id) REFERENCES customers(customer_id) ON DELETE CASCADE
+    FOREIGN KEY (customer_id) REFERENCES Customers(customer_id) ON DELETE CASCADE
 );
 
--- Create order_details table
-CREATE TABLE IF NOT EXISTS order_details (
+-- Create Order_Details table
+CREATE TABLE IF NOT EXISTS Order_Details (
     order_detail_id INT PRIMARY KEY AUTO_INCREMENT,
     order_id INT NOT NULL,
     book_id INT NOT NULL,
     quantity DOUBLE NOT NULL,
     unit_price DECIMAL(8, 2) NOT NULL,
     total_price DECIMAL(8, 2) NOT NULL,
-    FOREIGN KEY (order_id) REFERENCES orders(order_id) ON DELETE CASCADE,
-    FOREIGN KEY (book_id) REFERENCES books(book_id) ON DELETE CASCADE
+    FOREIGN KEY (order_id) REFERENCES Orders(order_id) ON DELETE CASCADE,
+    FOREIGN KEY (book_id) REFERENCES Books(book_id) ON DELETE CASCADE
 );
 
 -- Add indexes for better performance
-CREATE INDEX idx_books_author ON books(author_id);
-CREATE INDEX idx_books_isbn ON books(isbn);
-CREATE INDEX idx_orders_customer ON orders(customer_id);
-CREATE INDEX idx_order_details_order ON order_details(order_id);
-CREATE INDEX idx_order_details_book ON order_details(book_id);
+CREATE INDEX idx_Books_author ON Books(author_id);
+CREATE INDEX idx_Books_isbn ON Books(isbn);
+CREATE INDEX idx_Orders_customer ON Orders(customer_id);
+CREATE INDEX idx_Order_Details_order ON Order_Details(order_id);
+CREATE INDEX idx_Order_Details_book ON Order_Details(book_id);
